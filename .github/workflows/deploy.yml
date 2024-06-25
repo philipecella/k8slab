@@ -11,9 +11,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        
       - name: Start Minikube
-        run: minikube start
+        run: minikube delete && minikube start
 
       - name: Set Docker environment to Minikube
         run: eval $(minikube docker-env)
@@ -24,5 +24,11 @@ jobs:
       - name: Apply Kubernetes configuration
         run: kubectl apply -f deploy/k8s.yaml
 
-      - name: expose
+      - name: Wait for service to be ready
+        run: |
+          echo "Waiting for service to be ready..."
+          kubectl rollout status service/local-devex-svc
+          echo "Service is ready!"
+
+      - name: Expose service
         run: minikube service local-devex-svc
