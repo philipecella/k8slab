@@ -12,11 +12,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Start Minikube
-        run: minikube start && eval $(minikube docker-env)
+      - name: Check if Minikube is running
+        run: |
+          if ! minikube status > /dev/null 2>&1; then
+              echo "Minikube is not running. Starting..."
+              minikube start
+          fi
+
+      - name: Set Docker environment to Minikube
+        run: eval $(minikube docker-env)
 
       - name: Build Docker image
         run: docker build -t local/devex:v1 .
 
       - name: Apply Kubernetes configuration
-        run: kubectl apply -f deploy/k8s.yaml && sleep 30 && minikube service local-devex-svc
+        run: kubectl apply -f deploy/k8s.yaml
+        
+      - name: Sleep 10
+        run: sleep 10
+        
+      - name: Wait for pods to be ready
+        run: kubectl wait --for=condition=Ready pod --all
+
+      - name: Expose service
+        run: minikube service local-devex-svc
