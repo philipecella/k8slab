@@ -20,7 +20,7 @@ jobs:
           fi
 
       - name: Set Docker environment to Minikube
-        run: eval $(minikube docker-env)
+        run: source <(minikube docker-env)
 
       - name: Build Docker image
         run: docker build -t local/devex:v1 .
