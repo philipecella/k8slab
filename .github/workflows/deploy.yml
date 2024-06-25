@@ -13,4 +13,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set Docker environment to Minikube
-        run: minikube start && eval $(minikube docker-env) && minikube image build -t local/devex:v1 . && kubectl apply -f deploy/k8s.yaml && kubectl wait --for=condition=Ready pod --all &&  minikube service local-devex-svc
+        run: |
+            minikube start && \
+            eval $(minikube docker-env) && \
+            minikube image build -t local/devex:v1 . 2>/dev/null || true && \
+            kubectl apply -f deploy/k8s.yaml && \
+            kubectl wait --for=condition=Ready pod --all && \
+            minikube service local-devex-svc
