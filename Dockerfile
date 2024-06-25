@@ -1,7 +1,7 @@
 FROM golang:alpine
 
 # Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/medyagh/local-dev-example-with-minikube/
+WORKDIR $GOPATH/src/https://github.com/philipecella/k8slab
 
 # Copy everything from the current directory to the PWD (Present Working Directory) inside the container
 COPY . .
