@@ -19,16 +19,13 @@ jobs:
               minikube start
           fi
 
-      - name: Set Docker environment to Minikube
-        run: source <(minikube docker-env)
-
       - name: Build Docker image
-        run: docker build -t local/devex:v1 .
+        run: minikube image build -t local/devex:v1
 
       - name: Apply Kubernetes configuration
         run: kubectl apply -f deploy/k8s.yaml
         
-      - name: Sleep 10
+      - name: Sleep 20
         run: sleep 10
         
       - name: Wait for pods to be ready
