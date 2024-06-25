@@ -1,0 +1,25 @@
+name: Deploy to Minikube
+
+on:
+  push:
+    branches:
+      - main  # ajuste de acordo com o nome da sua branch principal
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Start Minikube
+        run: minikube start
+
+      - name: Set Docker environment to Minikube
+        run: eval $(minikube docker-env)
+
+      - name: Build Docker image
+        run: docker build -t local/devex:v1 .
+
+      - name: Apply Kubernetes configuration
+        run: kubectl apply -f deploy/k8s.yaml
