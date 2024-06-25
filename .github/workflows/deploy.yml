@@ -18,6 +18,9 @@ jobs:
               echo "Minikube is not running. Starting..."
               minikube start
           fi
+          
+      - name: Set Docker environment to Minikube
+        run: eval $(minikube docker-env)          
 
       - name: Build Docker image
         run: minikube image build -t local/devex:v1
