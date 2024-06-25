@@ -25,10 +25,7 @@ jobs:
         run: kubectl apply -f deploy/k8s.yaml
 
       - name: Wait for service to be ready
-        run: |
-          echo "Waiting for service to be ready..."
-          while [[ "$(kubectl get svc local-devex-svc -o 'jsonpath={.status.loadBalancer.ingress[0].ip}')" == "" ]]; do sleep 5; done
-          echo "Service is ready!"
+        run: sleep 10
 
       - name: Expose service
         run: minikube service local-devex-svc
