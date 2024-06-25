@@ -23,3 +23,6 @@ jobs:
 
       - name: Apply Kubernetes configuration
         run: kubectl apply -f deploy/k8s.yaml
+
+      - name: expose
+        run: minikube service local-devex-svc
